@@ -1,0 +1,14 @@
+# Ignore Python virtual environment
+venv/
+
+# Ignore vector database files
+chroma_db/
+
+# Ignore compiled Python cache
+__pycache__/
+
+# Ignore embedding/output files
+*.pkl
+
+# Ignore environment variable files
+.env

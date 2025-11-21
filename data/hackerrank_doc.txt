@@ -1,0 +1,338 @@
+SECTION 1 — BASIC PROGRAMMING
+Introduction to Programming
+
+Programming is the process of writing instructions for a computer to solve problems. A program consists of statements, logic, variables, and operations. Modern programming emphasizes clean code, readability, and correctness.
+
+Variables and Data Types
+
+Variables store values. Common data types include integers, floats, booleans, and strings. Dynamic languages infer types at runtime, while static languages require explicit type definitions.
+
+Operators
+
+Operators perform operations on variables or values. Categories include arithmetic, relational, logical, and bitwise operators. Operator precedence determines the order of evaluation.
+
+SECTION 2 — DATA STRUCTURES
+Arrays
+
+Arrays store elements of the same type in contiguous memory. Access time is O(1). Insertions and deletions in the middle are costly due to shifting.
+
+Strings
+
+Strings are sequences of characters. Many languages treat them as immutable. Common problems include substring search, string reversal, and pattern matching.
+
+Linked Lists
+
+A linked list is a collection of nodes where each node stores data and a pointer.
+Types:
+
+Singly-linked list
+
+Doubly-linked list
+
+Circular list
+
+Operations: insert, delete, reverse, detect cycles.
+
+Stacks
+
+A stack is LIFO (Last In First Out).
+Applications:
+
+Expression evaluation
+
+Function call stack
+
+Undo operations
+
+Queues
+
+A queue is FIFO (First In First Out).
+Types: normal queue, circular queue, deque (double-ended queue).
+Used in BFS, scheduling, simulations.
+
+Hash Maps
+
+A hash map stores key-value pairs.
+Key operations: insert, search, delete, all average O(1).
+Collisions are handled using chaining or open addressing.
+
+Trees
+
+A tree is a hierarchical structure.
+Binary trees: each node has ≤2 children.
+Binary Search Trees (BST): left < root < right.
+Operations: insertion, deletion, traversal (inorder, preorder, postorder).
+
+Heaps
+
+A heap is a complete binary tree used for priority queues.
+Min-heap: parent < children
+Max-heap: parent > children
+Common use: Dijkstra’s algorithm, scheduling.
+
+Graphs
+
+Graphs consist of nodes (vertices) and edges. Can be directed or undirected.
+Representations:
+
+Adjacency list
+
+Adjacency matrix
+
+Algorithms include BFS, DFS, shortest path, cycle detection.
+
+SECTION 3 — ALGORITHMS
+Sorting Algorithms
+
+Common algorithms:
+
+Bubble Sort – O(n²), simple but slow
+
+Merge Sort – O(n log n), stable
+
+Quick Sort – O(n log n) average, O(n²) worst
+
+Insertion Sort – good for small datasets
+
+Searching Algorithms
+
+Linear Search – O(n)
+Binary Search – O(log n), requires sorted list.
+
+Dynamic Programming
+
+DP optimizes recursive problems by storing results of subproblems.
+Steps:
+
+Define subproblems
+
+Write recurrence
+
+Memoize or use bottom-up DP
+
+Example: Fibonacci, knapsack, LCS.
+
+Greedy Algorithms
+
+Greedy chooses the locally optimal choice. Works when the problem has optimal substructure & greedy choice property.
+Examples:
+
+Activity selection
+
+Huffman coding
+
+Graph Algorithms
+
+BFS for shortest path in unweighted graphs
+
+DFS for traversal and cycle detection
+
+Dijkstra for weighted shortest path
+
+Bellman-Ford for graphs with negative weights
+
+Floyd–Warshall for all-pairs shortest paths
+
+SECTION 4 — MATHEMATICS & PROBABILITY
+Number Theory
+
+Prime numbers, GCD, LCM, modular arithmetic (modular inverse, fast exponentiation).
+
+Combinatorics
+
+Permutations and combinations, binomial coefficient, Pascal’s triangle.
+
+Probability Basics
+
+Events, independent events, conditional probability, Bayes’ theorem.
+
+SECTION 5 — OBJECT-ORIENTED PROGRAMMING
+OOP Concepts
+
+Encapsulation
+
+Inheritance
+
+Polymorphism
+
+Abstraction
+
+Classes and Objects
+
+A class defines blueprint; an object is an instance.
+Constructors initialize objects; destructors clean up memory.
+
+Interfaces & Abstract Classes
+
+Interfaces define behavior without implementation.
+Abstract classes have partial implementation.
+
+SECTION 6 — DATABASES
+SQL Basics
+
+SQL manipulates relational databases.
+Operations:
+
+SELECT
+
+INSERT
+
+UPDATE
+
+DELETE
+
+Joins
+
+Types:
+
+Inner join
+
+Left join
+
+Right join
+
+Full join
+
+Used to combine data across tables.
+
+Indexes
+
+Indexes speed up queries by reducing lookup time.
+Trade-off: slow inserts/updates, more memory usage.
+
+Normalization
+
+Removing redundancy through:
+1NF, 2NF, 3NF, BCNF.
+Goal: avoid anomalies.
+
+SECTION 7 — OS & NETWORKING
+Operating Systems
+
+Key concepts:
+
+Processes & threads
+
+Scheduling
+
+Deadlocks
+
+Memory management
+
+Paging and segmentation
+
+Networking Basics
+
+OSI model layers, TCP vs UDP, IP addressing, routing.
+
+SECTION 8 — MACHINE LEARNING ESSENTIALS
+Supervised Learning
+
+Supervised learning uses labeled data.
+Types:
+
+Regression
+
+Classification
+
+Regression predicts continuous values.
+Classification predicts categories.
+
+Regression
+
+Regression models relationships between variables.
+Types:
+
+Linear Regression
+
+Polynomial Regression
+
+Metrics:
+
+MSE
+
+MAE
+
+R² Score
+
+Regularization:
+
+Lasso
+
+Ridge
+
+Classification
+
+Popular algorithms:
+
+Logistic regression
+
+Decision trees
+
+Random forest
+
+SVM
+
+KNN
+
+Unsupervised Learning
+
+Clustering (K-means, Hierarchical), dimensionality reduction (PCA).
+
+Overfitting and Underfitting
+
+Overfitting: model learns noise.
+Underfitting: model is too simple.
+Fixes: regularization, pruning, cross-validation.
+
+SECTION 9 — CODING CHALLENGE PATTERNS
+Two Pointers
+
+Used for sorted arrays, string scanning, linked list problems.
+
+Sliding Window
+
+Efficient for subarray problems, average/maximum/unique counts.
+
+Binary Search on Answer
+
+Used in problems involving feasibility checks (min capacity, max speed).
+
+Prefix Sums
+
+Speeds up range queries to O(1).
+
+Backtracking
+
+Used for recursion-based exploration: N-Queens, permutations.
+
+SECTION 10 — REGEX & STRING MANIPULATION
+Regular Expressions
+
+Symbols:
+
+. any char
+
+* zero or more
+
++ one or more
+
+? optional
+
+[ ] character set
+
+| OR
+
+^, $ anchors
+
+Uses: validation, searching, parsing.
+
+Common Regex Patterns
+
+Email validation
+
+Phone number
+
+Password strength
+
+URL matching
