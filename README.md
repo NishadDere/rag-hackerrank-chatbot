@@ -1,174 +1,175 @@
-A Retrieval-Augmented Generation (RAG) chatbot built using:
+🚀 RAG Hackerrank Chatbot
 
-ChromaDB (Vector database)
+A full Retrieval-Augmented Generation (RAG) system with conversational memory, strict/hybrid answer modes, citations, confidence scoring, chunk previews, reranking, and a simple FastAPI web UI.
 
-MPNet embeddings (all-mpnet-base-v2)
+This project demonstrates a complete end-to-end RAG pipeline, from document ingestion → semantic chunking → embeddings → vector search → reranking → LLM answering with provenance → frontend chat interface.
 
-BGE Reranker (BAAI/bge-reranker-base)
+Perfect for learning, extending, or adapting into a personal AI assistant.
 
-Groq LLM (llama-3.1-8b-instant)
+⭐ Features
+🔍 Retrieval & Ranking
 
-Conversational memory
+ChromaDB persistent vector store
 
-Strict & Hybrid answer modes
+MPNet embeddings (768-dim) for high-quality retrieval
 
-Typing animation + chunk previews + confidence scoring
+BGE Reranker for improved relevance ordering
 
-This chatbot answers questions by retrieving the most relevant sections (“chunks”) from a HackerRank-style document and generating answers with citations that trace back to the source text.
+Multi-query expansion for better recall
 
-✨ Features
-🔍 1. Retrieval-Augmented Generation (RAG)
+🧠 Smart Answering (RAG)
 
-Document → chunking → embeddings → stored in ChromaDB
+Strict mode → answer only from document (no hallucination)
 
-Multi-query expansion improves retrieval recall
+Hybrid mode → uses document first, but can extend with external knowledge
 
-BGE reranker improves ranking relevance
+Citation support ([Chunk X])
 
-Provenance: each answer links back to exact text chunks
+Confidence scoring (based on retrieved chunks)
 
-🎭 2. Answer Modes
+Chunk previews for transparency
 
-Strict Mode → Only uses document context
+💬 Conversation Features
 
-Hybrid Mode → Mixes document + model knowledge with disclaimer
+ChatGPT-style typing animation
 
-Switch anytime using:
+Multi-turn memory (configurable context window)
 
-/mode strict
-/mode hybrid
+Local browser session memory
 
-💬 3. Conversational Memory
+Per-session system prompt
 
-Keeps last 4 conversation turns
+Toggleable UI controls (mode, citations, previews, dark mode)
 
-Allows follow-up questions like:
-“Explain it in simple words.”
-“Give an example.”
+📄 Document Support
 
-🔎 4. Chunk Previews
+Upload documents through /upload endpoint
 
-Enable:
+Auto-save uploaded files
 
-/preview on
+Future-ready pipeline for multi-document RAG
 
+🌐 Web Frontend
 
-Shows where the answer came from.
+Clean minimal UI
 
-📚 5. Citations
+Dark mode
 
-Enable/disable:
+Confidence bar
 
-/citations on
-/citations off
+Chunk preview panel
 
-🧠 6. Confidence Score
+Local session persistence
 
-Each answer returns a 0.0–1.0 confidence value based on context coverage.
+Built with pure HTML/CSS/JS (no build tools)
 
-🎨 7. ChatGPT-style typing animation
-
-Realistic type-writer effect in console.
-
-📁 Project Structure
+🏗 Project Structure
 rag-hackerrank-chatbot/
 │
+├── app.py                     # FastAPI backend
+├── static/
+│     └── index.html           # Web UI
+│
 ├── code/
-│   ├── ingest_and_chunk.py
-│   ├── embed_chunks.py
-│   ├── index_chroma.py
-│   ├── retriever_chroma.py
-│   ├── answer_with_provenance.py
-│   ├── chatbot.py
-│   └── __init__.py
+│     ├── ingest_and_chunk.py
+│     ├── embed_chunks.py
+│     ├── index_chroma.py
+│     ├── retriever_chroma.py  # embeddings + reranker + multi-query
+│     ├── answer_with_provenance.py
+│     └── chatbot.py           # CLI version
 │
 ├── data/
-│   └── hackerrank_doc.txt
+│     └── hackerrank_doc.txt
 │
-├── chroma_db/            # ignored
-├── venv/                 # ignored
+├── chroma_db/                 # vector store (ignored in git)
+├── venv/                      # virtual environment (ignored)
 ├── .gitignore
 └── README.md
 
-⚙️ Installation
-1. Clone the repository
+🛠 Installation
+1. Clone
 git clone https://github.com/NishadDere/rag-hackerrank-chatbot.git
 cd rag-hackerrank-chatbot
 
-2. Create a virtual environment
+2. Create virtual environment
 python -m venv venv
-venv\Scripts\activate   # Windows
+venv\Scripts\activate  # on Windows
 
 3. Install dependencies
 pip install -r requirements.txt
 
 
-If you don’t have requirements.txt, generate it:
+(If no requirements.txt exists, generate one:)
 
 pip freeze > requirements.txt
 
-4. Add your Groq API key
+🔐 Environment Variables
 
-Create a .env file:
+Create a .env file in the root directory:
 
-GROQ_API_KEY=your_key_here
+GROQ_API_KEY=your_api_key_here
 GROQ_MODEL=llama-3.1-8b-instant
 
-🏗️ Data Processing & Indexing
-Step 1 — Chunk the document
+
+This is automatically loaded by dotenv.
+
+📥 Prepare Your Document (RAG Pipeline)
+Step 1 — Ingest & Chunk
 python -m code.ingest_and_chunk
 
-Step 2 — Create embeddings
+Step 2 — Embed
 python -m code.embed_chunks
 
-Step 3 — Index into ChromaDB
+Step 3 — Index
 python -m code.index_chroma
 
-🤖 Running the Chatbot
+▶ Running the Backend Server
+uvicorn app:app --reload
+
+
+Backend should run at:
+
+http://localhost:8000
+
+
+Open the UI:
+
+http://localhost:8000/static/index.html
+
+🎨 Frontend UI Screenshots (Optional)
+
+(You can add screenshots later here.)
+
+🧪 CLI Version
 python -m code.chatbot
 
-Example Commands:
-/mode hybrid
-/citations off
-/preview on
 
-Example Questions:
-What is regression?
-Explain in simple words.
-Is regression supervised or unsupervised?
-What are the steps of KNN?
+Supports:
 
-🧪 Example Output (Strict Mode)
-Bot: Regression predicts continuous values. [Chunk 0]
-Regression models relationships between variables. [Chunk 2]
-Confidence: 88%
+/mode strict|hybrid
 
-🛡️ .gitignore Summary
+/citations on|off
 
-This project safely ignores:
+/preview on|off
 
-venv/
+chat history awareness
 
-chroma_db/
+typing animation
 
-.env
+🧩 Future Roadmap
 
-*.pkl
+Multi-document RAG
 
-__pycache__/
+Document search & filtering
 
-So no API keys or local DB data are ever uploaded to GitHub.
+Semantic highlighting of cited chunks
 
-🔮 Future Improvements
+Chunk heatmap visualization
 
-Web UI (FastAPI + React or Streamlit Support)
+User accounts + cloud session persistence
 
-Better memory summarization
+Optional Postgres/MongoDB for chat logs
 
-UI components for chunk previews
+Switchable embeddings & reranker models
 
-Evaluation metrics for retrieval quality
-
-PDF/document ingestion
-
-Fine-tuned domain models
+Streaming responses (SSE / WebSockets)
