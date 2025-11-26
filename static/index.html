@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>RAG Chatbot</title>
+  <style>
+    body { font-family: system-ui, Arial; margin: 20px; max-width:800px; }
+    .chat { border: 1px solid #ddd; padding: 12px; min-height:300px; background:#fafafa; }
+    .user { color: #0b63d3; }
+    .bot { color: #111; }
+    .controls { margin:10px 0; display:flex; gap:8px; align-items:center;}
+    .small { font-size:0.9em; color:#666;}
+    .preview { background:#fff; border:1px solid #eee; padding:6px; margin:6px 0; }
+    .confidence { height:10px; background:#eee; border-radius:6px; overflow:hidden; }
+    .confidence > i { display:block; height:100%; background:linear-gradient(90deg,#4caf50,#8bc34a); width:0%; }
+    .dark { background:#111;color:#eee }
+  </style>
+</head>
+<body>
+  <h2>RAG Chatbot</h2>
+
+  <div style="margin-bottom:8px">
+    <label>System prompt (per session):</label><br/>
+    <textarea id="systemPrompt" rows="3" style="width:100%;" placeholder="Set system instruction (tone, format, length)..."></textarea>
+  </div>
+
+  <div class="controls">
+    <label>Mode:</label>
+    <select id="mode">
+      <option value="strict">strict (cite only)</option>
+      <option value="hybrid">hybrid</option>
+    </select>
+
+    <label style="margin-left:12px">Citations</label>
+    <input type="checkbox" id="citations" checked />
+
+    <label style="margin-left:12px">Chunk previews</label>
+    <input type="checkbox" id="previews" />
+
+    <button id="clear">Clear</button>
+    <button id="toggleDark" style="margin-left:auto">Dark</button>
+  </div>
+
+  <div id="chat" class="chat"></div>
+
+  <div style="margin-top:12px">
+    <input id="input" style="width:80%" placeholder="Type your question..." />
+    <button id="send">Send</button>
+  </div>
+
+  <script>
+    const chatDiv = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const systemPromptEl = document.getElementById('systemPrompt');
+    const modeEl = document.getElementById('mode');
+    const citationsEl = document.getElementById('citations');
+    const previewsEl = document.getElementById('previews');
+
+    // restore system prompt and session from localStorage
+    systemPromptEl.value = localStorage.getItem('systemPrompt') || '';
+    let sessionId = localStorage.getItem('sessionId') || null;
+    let chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+
+    function renderHistory() {
+      chatDiv.innerHTML = '';
+      for (let turn of chatHistory) {
+        const u = document.createElement('div'); u.className='user'; u.textContent='You: ' + turn.question;
+        chatDiv.appendChild(u);
+        const b = document.createElement('div'); b.className='bot'; b.textContent='Bot: ' + turn.answer;
+        chatDiv.appendChild(b);
+        chatDiv.appendChild(document.createElement('hr'));
+      }
+    }
+    renderHistory();
+
+    document.getElementById('send').onclick = async () => {
+      const userPrompt = input.value.trim();
+      if (!userPrompt) return;
+      input.value='';
+
+      // save system prompt locally
+      localStorage.setItem('systemPrompt', systemPromptEl.value);
+
+      // show user turn
+      chatHistory.push({ question: userPrompt, answer: "..." });
+      localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+      renderHistory();
+
+      const payload = {
+        system_prompt: systemPromptEl.value,
+        user_prompt: userPrompt,
+        mode: modeEl.value,
+        show_citations: citationsEl.checked,
+        session_id: sessionId,
+        chat_history: chatHistory
+      };
+
+      const res = await fetch('/chat', {
+        method:'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      // update session id if new
+      sessionId = data.session_id;
+      localStorage.setItem('sessionId', sessionId);
+
+      // replace last answer
+      chatHistory[chatHistory.length-1].answer = data.answer;
+      localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+      renderHistory();
+
+      // show confidence bar & previews if requested
+      if (previewsEl.checked && data.previews && data.previews.length) {
+        const pdiv = document.createElement('div'); pdiv.className='preview';
+        pdiv.innerHTML = `<b>Chunk previews</b><br/>` + data.previews.map(p=>`[Chunk ${p[0]}] ${p[1]}: ${p[2]}`).join('<br/>');
+        chatDiv.appendChild(pdiv);
+      }
+
+      const confBar = document.createElement('div'); confBar.className='confidence';
+      const inner = document.createElement('i'); inner.style.width = (data.confidence*100)+'%';
+      confBar.appendChild(inner);
+      chatDiv.appendChild(confBar);
+
+      window.scrollTo(0, document.body.scrollHeight);
+    };
+
+    document.getElementById('clear').onclick = () => {
+      chatHistory = [];
+      localStorage.removeItem('chatHistory');
+      renderHistory();
+    }
+
+    document.getElementById('toggleDark').onclick = () => {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+</body>
+</html>

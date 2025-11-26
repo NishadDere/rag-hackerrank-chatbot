@@ -99,7 +99,7 @@ def format_chunk_preview(retrieved_chunks, max_chars=300):
     return previews
 
 
-def answer_question(question, chat_history=None, mode="strict", show_citations=True):
+def answer_question(question, chat_history=None, mode='strict', show_citations=True, system_prompt=None):   
     """
     Main RAG answering function.
 
